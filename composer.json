@@ -24,6 +24,7 @@
   },
   "scripts": {
     "analyse" : "phpstan analyse",
-    "cs-fix" : "php-cs-fixer fix --verbose --diff"
+    "cs-fix" : "php-cs-fixer fix --verbose --diff",
+    "test" : "vendor/bin/phpunit"
   }
 }
