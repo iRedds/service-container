@@ -25,6 +25,6 @@ $container->set('new_service', static function ($container) {
 
 // even if the service is specified as a singleton, it is possible to obtain a new instance of the class
 // without changing the state of the service.
-$service2 = $container->instance(ServiceSingleton::class);
+$service = $container->instance(ServiceClassInterface::class);
 
 ```
