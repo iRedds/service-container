@@ -1,0 +1,10 @@
+<phpunit
+    bootstrap="tests/support/bootstrap.php"
+    cacheResult="false"
+>
+    <testsuites>
+        <testsuite name="ServiceContainer">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
