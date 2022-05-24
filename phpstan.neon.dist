@@ -4,4 +4,4 @@ parameters:
     - src
   tmpDir: tmp/phpstan
   bootstrapFiles:
-    - tests/Support/autoload.php
+    - vendor/autoload.php
