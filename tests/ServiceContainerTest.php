@@ -24,6 +24,9 @@ class ServiceContainerTest extends TestCase
 
         $this->assertEquals($service, $service1);
         $this->assertTrue($service !== $service1);
+
+        $container->set(Service::class);
+        $this->assertInstanceOf(Service::class, $container->get(Service::class));
     }
 
     public function testSetServiceSingleton(): void
@@ -60,17 +63,6 @@ class ServiceContainerTest extends TestCase
 
         $this->assertSame($service, $service1);
         $this->assertNotSame($service, $service3);
-    }
-
-    public function testAddService(): void
-    {
-        $container = new ServiceContainer();
-
-        $container->set('service', static fn () => new Service());
-        $container->set('service2', Service::class);
-
-        $this->assertInstanceOf('Support\Service', $container->get('service'));
-        $this->assertInstanceOf('Support\Service', $container->get('service2'));
     }
 
     public function testHasService(): void

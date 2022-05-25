@@ -8,6 +8,11 @@ $container = new \CI\ServiceContainer();
 // registering a service in a container
 $container->set(ServiceClassInterface::class, ServiceClass::class);
 
+// registering a service in a container when the service id is the same as the service class name.
+$container->set(Service::class);
+// equal
+$container->set(Service::class, Service::class);
+
 // registering a service in a container as a singleton.
 $container->singleton(ServiceClassInterface::class, ServiceClass::class);
 
@@ -19,6 +24,7 @@ $container->set('new_service', static function ($container) {
         ['array', 'of', 'values']
     );
 });
+
 
 // getting an instance of the service class.
 $service = $container->get(ServiceClassInterface::class);

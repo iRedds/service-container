@@ -10,14 +10,18 @@ class ServiceContainer implements ServiceContainerInterface
     protected array $container = [];
 
     /**
-     * @param \Closure|string $service
+     * @param \Closure|string|null $service
      *
      * @throws ServiceContainerException
      */
-    public function set(string $id, $service, bool $shared = false): void
+    public function set(string $id, $service = null, bool $shared = false): void
     {
         if ($this->has($id)) {
             throw ServiceContainerException::exists();
+        }
+
+        if (is_null($service)) {
+            $service = $id;
         }
 
         $this->checkBuilderType($service);
@@ -30,11 +34,11 @@ class ServiceContainer implements ServiceContainerInterface
     }
 
     /**
-     * @param \Closure|string $service
+     * @param \Closure|string|null $service
      *
      * @throws ServiceContainerException
      */
-    public function singleton(string $id, $service): void
+    public function singleton(string $id, $service = null): void
     {
         $this->set($id, $service, true);
     }
