@@ -25,6 +25,10 @@ $container->set('new_service', static function ($container) {
     );
 });
 
+// registering a service in a container from an object.
+// in this case, the service will be registered as a singleton.
+$instance = new Service();
+$container->set('Service', $instance);
 
 // getting an instance of the service class.
 $service = $container->get(ServiceClassInterface::class);

@@ -10,7 +10,7 @@ class ServiceContainer implements ServiceContainerInterface
     protected array $container = [];
 
     /**
-     * @param \Closure|string|null $service
+     * @param \Closure|object|string|null $service
      *
      * @throws ServiceContainerException
      */
@@ -26,15 +26,17 @@ class ServiceContainer implements ServiceContainerInterface
 
         $this->checkBuilderType($service);
 
+        $isInstance = is_object($service) && ! ($service instanceof \Closure);
+
         $this->container[$id] = [
             'builder'  => $service,
-            'shared'   => $shared,
-            'instance' => null,
+            'shared'   => $isInstance ? true : $shared,
+            'instance' => $isInstance ? $service : null,
         ];
     }
 
     /**
-     * @param \Closure|string|null $service
+     * @param \Closure|object|string|null $service
      *
      * @throws ServiceContainerException
      */
@@ -47,6 +49,40 @@ class ServiceContainer implements ServiceContainerInterface
      * @throws ServiceContainerException
      */
     public function get(string $id, bool $shared = true): object
+    {
+        return $this->getService($id);
+    }
+
+    /**
+     * @throws ServiceContainerException
+     */
+    public function instance(string $id): object
+    {
+        return $this->getService($id, false);
+    }
+
+    public function has(string $id): bool
+    {
+        return isset($this->container[$id]);
+    }
+
+    /**
+     * @param Closure|object|string $builder
+     *
+     */
+    protected function getServiceInstance($builder): object
+    {
+        if ($builder instanceof \Closure) {
+            return $builder($this);
+        }
+
+        return new $builder();
+    }
+
+    /**
+     * @throws ServiceContainerException
+     */
+    public function getService(string $id, bool $shared = true): object
     {
         if (! $this->has($id)) {
             throw ServiceContainerException::notFound();
@@ -64,40 +100,14 @@ class ServiceContainer implements ServiceContainerInterface
     }
 
     /**
-     * @throws ServiceContainerException
-     */
-    public function instance(string $id): object
-    {
-        return $this->get($id, false);
-    }
-
-    public function has(string $id): bool
-    {
-        return isset($this->container[$id]);
-    }
-
-    /**
-     * @param Closure|object|string $builder
-     *
-     * @return object
-     */
-    protected function getServiceInstance($builder): object
-    {
-        if ($builder instanceof \Closure) {
-            return $builder($this);
-        }
-
-        return new $builder();
-    }
-
-    /**
      * @param mixed $builder
+     *
      * @return void
      * @throws ServiceContainerException
      */
     protected function checkBuilderType($builder)
     {
-        if (! ($builder instanceof \Closure) && (! is_string($builder) || ! class_exists($builder))) {
+        if (! is_object($builder) && (! is_string($builder) || ! class_exists($builder))) {
             throw ServiceContainerException::builderType(gettype($builder));
         }
     }

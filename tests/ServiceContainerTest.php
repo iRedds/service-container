@@ -57,12 +57,24 @@ class ServiceContainerTest extends TestCase
 
         $container->singleton('service', static fn () => new Service());
 
-        $service = $container->get('service');
+        $service  = $container->get('service');
         $service1 = $container->get('service');
         $service3 = $container->instance('service');
 
         $this->assertSame($service, $service1);
         $this->assertNotSame($service, $service3);
+    }
+
+    public function testServiceFromInstance()
+    {
+        $container = new ServiceContainer();
+        $instance  = new Service();
+
+        $container->set('Service', $instance);
+
+        $service = $container->get('Service');
+
+        $this->assertSame($instance, $service);
     }
 
     public function testHasService(): void

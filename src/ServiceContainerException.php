@@ -16,6 +16,6 @@ class ServiceContainerException extends \Exception
 
     public static function builderType(string $type): self
     {
-        return new self('Unable to build a service instance. Unavailable type: ' . $type . '.');
+        return new self("Unable to build a service instance. Unavailable type: {$type}.");
     }
 }

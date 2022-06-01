@@ -5,6 +5,7 @@ namespace CI;
 interface ServiceContainerInterface
 {
     public function has(string $id): bool;
+
     public function get(string $id, bool $shared = true): object;
 
     /**
