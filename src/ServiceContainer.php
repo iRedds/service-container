@@ -53,14 +53,6 @@ class ServiceContainer implements ServiceContainerInterface
         return $this->getService($id);
     }
 
-    /**
-     * @throws ServiceContainerException
-     */
-    public function instance(string $id): object
-    {
-        return $this->getService($id, false);
-    }
-
     public function has(string $id): bool
     {
         return isset($this->container[$id]);
@@ -82,7 +74,7 @@ class ServiceContainer implements ServiceContainerInterface
     /**
      * @throws ServiceContainerException
      */
-    public function getService(string $id, bool $shared = true): object
+    protected function getService(string $id, bool $shared = true): object
     {
         if (! $this->has($id)) {
             throw ServiceContainerException::notFound();

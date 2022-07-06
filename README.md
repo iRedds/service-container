@@ -32,8 +32,4 @@ $container->set('Service', $instance);
 
 // getting an instance of the service class.
 $service = $container->get(ServiceClassInterface::class);
-
-// even if the service is specified as a singleton, it is possible to obtain a new instance of the class
-// without changing the state of the service.
-$service = $container->instance(ServiceClassInterface::class);
 ```

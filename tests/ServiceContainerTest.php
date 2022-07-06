@@ -51,20 +51,6 @@ class ServiceContainerTest extends TestCase
         $this->assertSame(2, $service->value);
     }
 
-    public function testSingletonNewInstance(): void
-    {
-        $container = new ServiceContainer();
-
-        $container->singleton('service', static fn () => new Service());
-
-        $service  = $container->get('service');
-        $service1 = $container->get('service');
-        $service3 = $container->instance('service');
-
-        $this->assertSame($service, $service1);
-        $this->assertNotSame($service, $service3);
-    }
-
     public function testServiceFromInstance()
     {
         $container = new ServiceContainer();
@@ -146,20 +132,5 @@ class ServiceContainerTest extends TestCase
         $this->assertEquals($serviceDependency, $serviceDependency2);
         $this->assertNotSame($serviceDependency, $serviceDependency2);
         $this->assertSame($serviceDependency->getService(), $serviceDependency2->getService());
-    }
-
-    public function testBuildNewInstance(): void
-    {
-        $container = new ServiceContainer();
-
-        $container->singleton(Service::class, Service::class);
-
-        $service     = $container->get(Service::class);
-        $service2    = $container->get(Service::class);
-        $newInstance = $container->instance(Service::class);
-
-        $this->assertSame($service, $service2);
-        $this->assertNotSame($service, $newInstance);
-        $this->assertEquals($service, $newInstance);
     }
 }
